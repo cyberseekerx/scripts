@@ -6,21 +6,17 @@ pkg update -y && pkg install wget ffmpeg -y
 # Install SpotDL using official script
 curl -sL https://raw.githubusercontent.com/spotDL/spotify-downloader/master/scripts/termux.sh | bash
 
-# Create download directory
+# Create music folder
 mkdir -p /storage/emulated/0/Music/SpotDL
 
-# Add alias to jump to download folder
+# Alias to go to the download folder
 echo 'alias gotospot="cd /storage/emulated/0/Music/SpotDL"' >> ~/.bashrc
 
-# Add alias to download directly into download folder
-cat > ~/.spotit <<'EOF'
-#!/data/data/com.termux/files/usr/bin/bash
-cd /storage/emulated/0/Music/SpotDL
-spot "$1"
-EOF
+# Alias for shorter spotdl command
+echo 'alias spot="spotdl"' >> ~/.bashrc
 
-chmod +x ~/.spotit
-echo 'alias spotit="~/.spotit"' >> ~/.bashrc
+# Reload aliases immediately
+source ~/.bashrc
 
 # Reload shell so aliases work
 source ~/.bashrc
