@@ -11,7 +11,7 @@ source ~/.bashrc
 # Add global alias to run SpotDL script
 echo 'alias spot="cd /storage/emulated/0/music/SpotDL && bash .spot.sh"' >> ~/.bashrc
 source ~/.bashrc
-cd cd /storage/emulated/0/Music/SpotDL
+cd /storage/emulated/0/Music/SpotDL
 
 curl -sL https://github.com/cyberseekerx/scripts/blob/main/spot.sh -o .spot.sh
 chmod +x .spot.sh
