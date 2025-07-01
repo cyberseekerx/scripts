@@ -1,8 +1,3 @@
-
-Ayush Kanekar
-4:10 PM (3 minutes ago)
-to me
-
 cd  /storage/emulated/0/Music/SpotDL
 rm .spot.sh
 echo '#!/bin/bash
