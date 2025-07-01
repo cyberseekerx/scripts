@@ -1,21 +1,46 @@
-#copy everything here
-# Create music folder
-mkdir -p /storage/emulated/0/Music/SpotDL
-source ~/.bashrc
 
-# makes the spot execute from anywhere
-echo 'alias spot="cd /storage/emulated/0/Muisic/SpotDL && bash .spot.sh"' >> ~/.bashrc
+Ayush Kanekar
+4:10 PM (3 minutes ago)
+to me
 
-echo 'alias gotospot="cd /storage/emulated/0/Music/SpotDL"' >> ~/.bashrc
-source ~/.bashrc
-# Add global alias to run SpotDL script
-echo 'alias spot="cd /storage/emulated/0/music/SpotDL && bash .spot.sh"' >> ~/.bashrc
-source ~/.bashrc
-cd /storage/emulated/0/Music/SpotDL
+cd  /storage/emulated/0/Music/SpotDL
+rm .spot.sh
+echo '#!/bin/bash
 
-curl -sL https://github.com/cyberseekerx/scripts/blob/main/spot.sh -o .spot.sh
-chmod +x .spot.sh
+echo -e "🎵 Select Audio Quality:"
+echo -e "  [0] 🎧 Free Tier (128kbps)"
+echo -e "  [1] 💎 better than spotify Premium Tire (320kbps)"
+read -p "Your choice (0-1): " quality_choice
+case "$quality_choice" in
+0) quality="128k" ;;
+1) quality="320k" ;;
+*)
+  echo "Invalid choice. Defaulting to Overkill Mode."
+  quality="320k"
+  ;;
+esac
 
-curl -sL https://raw.githubusercontent.com/cyberseekerx/scripts/refs/heads/main/spotdl-install.sh | bash 
+read -p "🎧 Enter the Spotify URL: " spotify_url
 
-#note that thare are importent file ".spot.sh" don't delete if using spot 
+echo "📥 Downloading with SpotDL..."
+spotdl "$spotify_url"
+
+# Find the newest .mp3 file
+downloaded_file=$(ls -t *.mp3 | head -n 1)
+
+# If no file found
+if [[ ! -f "$downloaded_file" ]]; then
+  echo "❌ No MP3 file found. Something went wrong with the download."
+  exit 1
+fi
+
+echo "🔄 Re-encoding '$downloaded_file' to bitrate: $quality"
+output_file="converted_${downloaded_file}"
+
+ffmpeg -i "$downloaded_file" -b:a "$quality" -y "$output_file"
+
+# Optional cleanup and rename
+rm "$downloaded_file"
+mv "$output_file" "$downloaded_file"
+
+echo -e "✅ Done! File saved as: $downloaded_file with bitrate: $quality"' >> .spot.sh
