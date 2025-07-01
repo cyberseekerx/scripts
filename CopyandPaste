@@ -1,13 +1,21 @@
 #copy everything here
 # Create music folder
 mkdir -p /storage/emulated/0/Music/SpotDL
-mkdir -p /storage/emulated/0/.Ayush_spot_script_cache 
 source ~/.bashrc
-echo 'alias spot="cd /storage/emulated/0/.Ayush_spot_script_cache && bash spot.sh"' >> ~/.bashrc
+
+# makes the spot execute from anywhere
+echo 'alias spot="cd /storage/emulated/0/Muisic/SpotDL && bash .spot.sh"' >> ~/.bashrc
 
 echo 'alias gotospot="cd /storage/emulated/0/Music/SpotDL"' >> ~/.bashrc
 source ~/.bashrc
-cd /storage/emulated/0/.Ayush_spot_script_cache 
+# Add global alias to run SpotDL script
+echo 'alias spot="cd /storage/emulated/0/music/SpotDL && bash .spot.sh"' >> ~/.bashrc
+source ~/.bashrc
+cd cd /storage/emulated/0/Music/SpotDL
+
+curl -sL https://github.com/cyberseekerx/scripts/blob/main/spot.sh -o .spot.sh
+chmod +x .spot.sh
+
 curl -sL https://raw.githubusercontent.com/cyberseekerx/scripts/refs/heads/main/spotdl-install.sh | bash 
 
-#note that thare are importent file ".Ayush_spot_script_cache" don't delete them if using spot 
+#note that thare are importent file ".spot.sh" don't delete if using spot 
