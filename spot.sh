@@ -2,15 +2,13 @@
 cd /storage/emulated/0/Music/SpotDL
 
 echo -e "🎵 Select Audio Quality:"
-echo -e "  [1] 🎧 Free Tier (128kbps)"
-echo -e "  [2] 💎 spotify Premium Tire (192kbps)"
-echo -e "  [3] 🚀 Overkill Mode (320kbps)"
-read -p "Your choice (1-3): " quality_choice
+echo -e "  [0] 🎧 Free Tier (128kbps)"
+echo -e "  [1] 💎 better than spotify Premium Tire (320kbps)"
+read -p "Your choice (0-1): " quality_choice
 
 case "$quality_choice" in
-1) quality="128k" ;;
-2) quality="192k" ;;
-3) quality="320k" ;;
+0) quality="128k" ;;
+1) quality="320k" ;;
 *)
   echo "Invalid choice. Defaulting to Overkill Mode."
   quality="320k"
