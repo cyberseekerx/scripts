@@ -3,7 +3,6 @@ echo -e "🎵 Select Audio Quality:"
 echo -e "  [0] 🎧 Free Tier (128kbps)"
 echo -e "  [1] 💎 better than spotify Premium Tire (320kbps)"
 read -p "Your choice (0-1): " quality_choice
-
 case "$quality_choice" in
 0) quality="128k" ;;
 1) quality="320k" ;;
