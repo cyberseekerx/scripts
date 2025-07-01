@@ -1,59 +1,40 @@
 #!/bin/bash
 
-echo -e "🎵 Choose audio quality:"
-echo -e "  [1] 🧊 Low Quality (128kbps)"
-echo -e "  [2] 🔮 Medium Quality (192kbps)"
-echo -e "  [3] 🚀 High Quality (320kbps)"
-read -p "Your choice (1-3): " quality_choice
+echo -e "🎵 Select Audio Quality:"
+echo -e "  [1] 🎧 Free Tier (128kbps)"
+echo -e "  [3] 💎 better than spotify Premium Tire (320kbps)"
+read -p "Your choice (0-1): " quality_choice
 
-# Symbolic mapping (since spotdl doesn't support exact bitrate options)
 case "$quality_choice" in
-  1) tag="low";;
-  2) tag="medium";;
-  3) tag="high";;
-  *) echo "❌ Invalid input. Defaulting to high quality."; tag="high";;
+0) quality="128k" ;;
+1) quality="320k" ;;
+*)
+  echo "Invalid choice. Defaulting to Overkill Mode."
+  quality="320k"
+  ;;
 esac
 
-read -p "🎧 Enter Spotify URL: " spotify_url
+read -p "🎧 Enter the Spotify URL: " spotify_url
 
-# Download attempt
-echo "📥 Downloading... please wait."
-output_dir="$HOME/spotdl_downloads"
-mkdir -p "$output_dir"
-cd "$output_dir" || exit 1
+echo "📥 Downloading with SpotDL..."
+spotdl "$spotify_url"
 
-spotdl "$spotify_url" > /dev/null 2>&1
+# Find the newest .mp3 file
+downloaded_file=$(ls -t *.mp3 | head -n 1)
 
-downloaded_file=$(find . -maxdepth 1 -type f -iname "*.mp3" | sort | tail -n 1)
-
+# If no file found
 if [[ ! -f "$downloaded_file" ]]; then
-  echo -e "\n❌ Download failed with $tag quality."
-
-  # Ask user what to do next
-  echo -e "\n💡 What do you want to do?"
-  echo -e "  [1] Try a different quality"
-  echo -e "  [2] Retry same quality"
-  echo -e "  [3] Exit"
-  read -p "Choice: " retry_choice
-
-  case "$retry_choice" in
-    1)
-      echo -e "\n🔁 Restarting script..."
-      exec "$0"  # rerun the script from scratch
-      ;;
-    2)
-      echo -e "\n🔁 Retrying download..."
-      spotdl "$spotify_url" > /dev/null 2>&1
-      ;;
-    3)
-      echo "👋 Okay, exiting. No file downloaded."
-      exit 1
-      ;;
-    *)
-      echo "❌ Invalid input. Exiting."
-      exit 1
-      ;;
-  esac
-else
-  echo -e "\n✅ Success! File saved as: $downloaded_file"
+  echo "❌ No MP3 file found. Something went wrong with the download."
+  exit 1
 fi
+
+echo "🔄 Re-encoding '$downloaded_file' to bitrate: $quality"
+output_file="converted_${downloaded_file}"
+
+ffmpeg -i "$downloaded_file" -b:a "$quality" -y "$output_file"
+
+# Optional cleanup and rename
+rm "$downloaded_file"
+mv "$output_file" "$downloaded_file"
+
+echo -e "✅ Done! File saved as: $downloaded_file with bitrate: $quality"
