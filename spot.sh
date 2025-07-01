@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /storage/emulated/0/Music/SpotDL
 
 echo -e "🎵 Select Audio Quality:"
 echo -e "  [1] 🎧 Free Tier (128kbps)"
